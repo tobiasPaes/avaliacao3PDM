@@ -26,45 +26,29 @@ class HomeInfo extends StatefulWidget {
 }
 
 class _HomeInfoState extends State<HomeInfo> {
-  int _selectedItem = 0;
-
-  List<Widget> _widgetOptions = <Widget>[
-    InfoApp(),
-    TelaCaptura(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedItem = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meu App Av3'),
-      ),
-      body: _widgetOptions[_selectedItem],
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'info app',
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Meu App Av3'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'info page',),
+              Tab(text: 'Capturar Pokemons',),
+              Tab(text: 'Pokemons Capturados',),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Capturar Pokemons',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Pokemons Capturados',
-            activeIcon: null,
-          )
-        ],
-        currentIndex: _selectedItem,
-        onTap: _onItemTapped,
-      ),
+        ),
+        body: const TabBarView(
+          children: [
+            InfoApp(),
+            TelaCaptura(),
+            Text('pokemons capturados'),
+          ],
+        ),
+      )
     );
   }
 }

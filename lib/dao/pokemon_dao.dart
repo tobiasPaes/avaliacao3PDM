@@ -6,12 +6,12 @@ abstract class PokemonDAO {
   @insert
   Future<void> insertPokemon(Pokemon p);
 
-  @Query('SELECT * FROM pokemons')
+  @Query('SELECT * FROM app_database')
   Future<List<Pokemon>> listAll();
 
-  @Query('SELECT * FROM pokemons where id = :id')
-  Future<List<Pokemon>> findById(int id);
+  @Query('SELECT * FROM app_database where id = :id')
+  Future<List<Pokemon?>> findById(int id);
 
-  @Query('DELETE * FROM pokemons where id = :id')
+  @Query('DELETE * FROM app_database where id = :id')
   Future<void> deletePokemon(int id);
 }

@@ -85,7 +85,7 @@ class _$Appdatabase extends Appdatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Pokemon` (`nome` TEXT NOT NULL, `tipos` TEXT NOT NULL, `idPokedex` INTEGER NOT NULL, `peso` REAL NOT NULL, `altura` REAL NOT NULL, `cor` TEXT NOT NULL, PRIMARY KEY (`idPokedex`))');
+            'CREATE TABLE IF NOT EXISTS `app_database` (`nome` TEXT NOT NULL, `tipos` TEXT NOT NULL, `idPokedex` INTEGER NOT NULL, `peso` REAL NOT NULL, `altura` REAL NOT NULL, `cor` TEXT NOT NULL, PRIMARY KEY (`idPokedex`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -106,7 +106,7 @@ class _$PokemonDAO extends PokemonDAO {
   )   : _queryAdapter = QueryAdapter(database),
         _pokemonInsertionAdapter = InsertionAdapter(
             database,
-            'Pokemon',
+            'app_database',
             (Pokemon item) => <String, Object?>{
                   'nome': item.nome,
                   'tipos': item.tipos,
@@ -126,7 +126,7 @@ class _$PokemonDAO extends PokemonDAO {
 
   @override
   Future<List<Pokemon>> listAll() async {
-    return _queryAdapter.queryList('SELECT * FROM pokemons',
+    return _queryAdapter.queryList('SELECT * FROM app_database',
         mapper: (Map<String, Object?> row) => Pokemon(
             row['nome'] as String,
             row['idPokedex'] as int,
@@ -137,8 +137,8 @@ class _$PokemonDAO extends PokemonDAO {
   }
 
   @override
-  Future<List<Pokemon>> findById(int id) async {
-    return _queryAdapter.queryList('SELECT * FROM pokemons where id = ?1',
+  Future<List<Pokemon?>> findById(int id) async {
+    return _queryAdapter.queryList('SELECT * FROM app_database where id = ?1',
         mapper: (Map<String, Object?> row) => Pokemon(
             row['nome'] as String,
             row['idPokedex'] as int,
@@ -152,7 +152,7 @@ class _$PokemonDAO extends PokemonDAO {
   @override
   Future<void> deletePokemon(int id) async {
     await _queryAdapter
-        .queryNoReturn('DELETE * FROM pokemons where id = ?1', arguments: [id]);
+        .queryNoReturn('DELETE * FROM app_database where id = ?1', arguments: [id]);
   }
 
   @override
