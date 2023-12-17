@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:terceira_prova/dao/database.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
+import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:terceira_prova/ui/tela_captura.dart';
 
 class ListItem extends StatefulWidget {
@@ -19,11 +20,15 @@ class ListItem extends StatefulWidget {
 
 class _ListItemState extends State<ListItem> {
   late Future<Map<String, dynamic>> dadosPokemon;
+  final DatabasePokemonHelper _databasePokemonHelper = DatabasePokemonHelper();
+
   int pokemonId = 0;
   String pokemonName = '';
   String _urlCor = '';
   String pokemonColor = '';
-  bool noBanco = false;
+
+  String erro = '';
+  bool naBolsa = false;
 
   @override
   void initState() {
@@ -60,64 +65,82 @@ class _ListItemState extends State<ListItem> {
   }
 
   Future<void> capturarPokemon(Pokemon poke) async {
-    final db =
-        await $FloorAppdatabase.databaseBuilder('app_database.db').build();
+    final db = await _databasePokemonHelper.pokemonDatabase;
 
-    final pokeDao = db.pokeDao;
+    List<Pokemon?> p = await db.pokeDao.findById(poke.idPokedex);
 
-    List<Pokemon?> pokeBanco = await pokeDao.findById(poke.idPokedex);
+    if (p.isNotEmpty) {
+      naBolsa = true;
+    } else {
+      naBolsa = false;
+    }
 
-    await pokeDao.insertPokemon(poke);
+    try {
+      await db.pokeDao.insertPokemon(poke);
+    } catch (e) {
+      erro = "esse pokemon ja esta na seu pc ou na sua bolsa";
+      print(erro);
+    }
+
+    // final db =
+    //     await $FloorAppdatabase.databaseBuilder('app_database.db').build();
+    // final pokeDao = db.pokeDao;
+    // List<Pokemon?> pokeBanco = await pokeDao.findById(poke.idPokedex);
+    // await pokeDao.insertPokemon(poke);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: dadosPokemon,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          }
-          final data = snapshot.data!;
-          final tipo = data['types'][0]['type']['name'];
-          final peso = data['weight'] / 10;
-          final altura = data['height'] * 10;
-          final cor = pokemonColor;
-          // print(peso.toDouble());
-          // final Pokemon p =
-          //     Pokemon(pokemonName, pokemonId, peso, altura, cor, tipo);
+      future: dadosPokemon,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        }
+        if (snapshot.hasError) {
           return Center(
-              child: Row(
+            child: Text(snapshot.error.toString()),
+          );
+        }
+        final data = snapshot.data!;
+        final tipo = data['types'][0]['type']['name'];
+        final peso = data['weight'] / 10;
+        final altura = data['height'] * 10;
+        final cor = pokemonColor;
+
+        return Center(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 '$pokemonId, $pokemonName',
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.w200),
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w200
+                ),
               ),
               Container(
                 width: 8.0,
               ),
               IconButton(
-                onPressed: () {
-                  Pokemon p =
-                      Pokemon(pokemonName, pokemonId, peso.toDouble(), altura.toDouble(), cor, tipo);
-                  capturarPokemon(p);
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(content: Text('Pokemon Capturado')));
-                },
+                onPressed: !naBolsa
+                  ? () {
+                    Pokemon p = Pokemon(pokemonName, pokemonId, peso.toDouble(), altura.toDouble(), cor, tipo);
+                    capturarPokemon(p);
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pokemon Capturado')));
+                    }
+                  : null,
                 icon: const Icon(Icons.catching_pokemon),
-                color: const Color.fromRGBO(255, 0, 0, 1),
+                color: !naBolsa
+                  ? const Color.fromRGBO(255, 0, 0, 1)
+                  : const Color.fromARGB(255, 53, 53, 53),
               )
             ],
-          ));
-        });
+          )
+        );
+      }
+    );
   }
 }

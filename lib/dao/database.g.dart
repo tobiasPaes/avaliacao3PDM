@@ -138,7 +138,7 @@ class _$PokemonDAO extends PokemonDAO {
 
   @override
   Future<List<Pokemon?>> findById(int id) async {
-    return _queryAdapter.queryList('SELECT * FROM app_database where id = ?1',
+    return _queryAdapter.queryList('SELECT * FROM app_database where idPokedex = ?1',
         mapper: (Map<String, Object?> row) => Pokemon(
             row['nome'] as String,
             row['idPokedex'] as int,
@@ -152,7 +152,7 @@ class _$PokemonDAO extends PokemonDAO {
   @override
   Future<void> deletePokemon(int id) async {
     await _queryAdapter
-        .queryNoReturn('DELETE * FROM app_database where id = ?1', arguments: [id]);
+        .queryNoReturn('DELETE * FROM app_database where idPokedex = ?1', arguments: [id]);
   }
 
   @override
