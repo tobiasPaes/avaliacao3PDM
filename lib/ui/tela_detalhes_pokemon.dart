@@ -18,22 +18,17 @@ class TelaDetalhesPokemon extends StatefulWidget {
 class _MyWidgetState extends State<TelaDetalhesPokemon> {
   DatabasePokemonHelper _db = DatabasePokemonHelper();
   int id = 0;
-  late List<Pokemon?> list;
-  late Pokemon p;
+  List<Pokemon?> list = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     id = widget.id;
 
     var banco = () async {
       final db = await _db.pokemonDatabase;
       list = await db.pokeDao.findById(id);
-      setState(() {
-        list;
-
-      });
+      setState(() {});
     };
 
     banco();
@@ -46,39 +41,56 @@ class _MyWidgetState extends State<TelaDetalhesPokemon> {
         title: const Text('Detalhes pokemon'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FutureBuilder(
-              future: Future.value(list),
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
-                }
-                if(snapshot.hasError){
-                  return Center(
-                    child: Text(snapshot.error.toString()),
-                  );
-                }
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(list[index]!.nome),
+        child: FutureBuilder(
+          future: Future.value(list),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            }
 
-                    );
-                  },
-                );
-              }
-            ),
-            // Image(image: null),
-            Text(list.toString()),
-            Text(''),
-            Text(''),
-            Text(''),
-            Text(''),
-          ],
+            final pokemon = list.first;
+
+            return pokemon != null
+                ? ListView(
+                    children: [
+                      Card(
+                        child: ListTile(
+                          title: Text(
+                            pokemon.nome,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Nome: ${pokemon.nome}'),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Tipos: ${pokemon.tipos}'),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: Text('Cor: ${pokemon.cor}'),
+                        ),
+                      ),
+                      // Adicione mais detalhes conforme necessário
+                    ],
+                  )
+                : const Text('Detalhes não encontrados');
+          },
         ),
       ),
     );

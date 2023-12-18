@@ -4,7 +4,7 @@ import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:terceira_prova/ui/tela_detalhes_pokemon.dart';
 
 class TelaPokemonCapturado extends StatefulWidget {
-  const TelaPokemonCapturado({super.key});
+  const TelaPokemonCapturado({Key? key});
 
   @override
   State<TelaPokemonCapturado> createState() => _TelaPokemonCapturadoState();
@@ -12,55 +12,51 @@ class TelaPokemonCapturado extends StatefulWidget {
 
 class _TelaPokemonCapturadoState extends State<TelaPokemonCapturado> {
   List<Pokemon> bolsa = [];
-  // late List<Pokemon> bolsa2;
   final DatabasePokemonHelper _databasePokemonHelper = DatabasePokemonHelper();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    banco();
+    _atualizarBolsa();
   }
 
-  void banco() async {
+  Future<void> _atualizarBolsa() async {
     final db = await _databasePokemonHelper.pokemonDatabase;
-    bolsa = await db.pokeDao.listAll();
+    final novaBolsa = await db.pokeDao.listAll();
+    setState(() {
+      bolsa = novaBolsa;
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: bolsa.isEmpty
-            ? const Text('nenhum pokemon capturado')
-            : FutureBuilder(
-                future: Future.value(bolsa),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
+      body: bolsa.isEmpty
+          ? const Center(child: Text('Nenhum Pokémon capturado'))
+          : ListView.builder(
+              itemCount: bolsa.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(bolsa[index].nome),
+                  onTap: () async {
+                    // Detalhes do Pokémon
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TelaDetalhesPokemon(
+                          id: bolsa[index].idPokedex,
+                        ),
+                      ),
                     );
-                  }
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(snapshot.error.toString()),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: bolsa.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(bolsa[index].nome),
-                        onTap: () => {
-                          //detalhes pokemon
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TelaDetalhesPokemon(id: bolsa[index].idPokedex)))
-                        },
-                        onLongPress: () => {
-                          //soltar pokeon
-                        },
-                      );
-                    },
-                  );
-                }));
+                    // Atualizar a lista ao voltar
+                    _atualizarBolsa();
+                  },
+                  onLongPress: () {
+                    // Lógica para soltar o Pokémon
+                  },
+                );
+              },
+            ),
+    );
   }
 }
