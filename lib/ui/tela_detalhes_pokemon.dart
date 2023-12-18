@@ -31,8 +31,6 @@ class _MyWidgetState extends State<TelaDetalhesPokemon> {
   void initState() {
     super.initState();
     id = widget.id;
-
-    imagem =
     imagem = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
 
     var banco = () async {
@@ -103,7 +101,6 @@ class _MyWidgetState extends State<TelaDetalhesPokemon> {
                     children: [
                       Card(
                         child: Image.network(imagem, width: 96, height: 96),
-
                       ),
                       Card(
                         child: ListTile(
@@ -118,12 +115,7 @@ class _MyWidgetState extends State<TelaDetalhesPokemon> {
                       ),
                       Card(
                         child: ListTile(
-                          title: Text('Nome: ${pokemon.nome}'),
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: Text('Tipos: ${pokemon.tipos}'),
+                          title: Text('Tipo: ${pokemon.tipos}'),
                         ),
                       ),
                       Card(

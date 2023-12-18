@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
 import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:terceira_prova/ui/tela_detalhes_pokemon.dart';
+import 'package:terceira_prova/ui/tela_soltar_pokemon.dart';
 
 class TelaPokemonCapturado extends StatefulWidget {
   const TelaPokemonCapturado({Key? key});
@@ -51,7 +52,14 @@ class _TelaPokemonCapturadoState extends State<TelaPokemonCapturado> {
                     // Atualizar a lista ao voltar
                     _atualizarBolsa();
                   },
-                  onLongPress: () {
+                  onLongPress: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TelaSoltarPokemon(id: bolsa[index].idPokedex)
+                      ),
+                    );
+                    _atualizarBolsa();
                     // Lógica para soltar o Pokémon
                   },
                 );
