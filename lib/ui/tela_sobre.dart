@@ -10,19 +10,6 @@ class TelaSobre extends StatelessWidget {
           backgroundColor: const Color.fromARGB(
               255, 221, 58, 58), // Substitua pela cor desejada
           title: const Text('Desenvolvedores'),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TelaSobre(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.info),
-            ),
-          ],
         ),
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: const Center(
