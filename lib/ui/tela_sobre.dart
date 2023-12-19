@@ -7,8 +7,8 @@ class TelaSobre extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor:
-              Color.fromARGB(255, 225, 200, 200), // Substitua pela cor desejada
+          backgroundColor: const Color.fromARGB(
+              255, 221, 58, 58), // Substitua pela cor desejada
           title: const Text('Desenvolvedores'),
           actions: [
             IconButton(
