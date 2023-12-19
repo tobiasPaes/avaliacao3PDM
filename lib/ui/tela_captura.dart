@@ -110,7 +110,7 @@ class _TelaCapturaState extends State<TelaCaptura> {
                   );
                 }
                 final data = snapshot.data!;
-                final name = data['results'][rand[0]]['name'];
+                //final name = data['results'][rand[0]]['name'];
 
                 return Container(
                   decoration: BoxDecoration(

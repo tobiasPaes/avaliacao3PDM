@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:terceira_prova/dao/database.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
 import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:http/http.dart' as http;

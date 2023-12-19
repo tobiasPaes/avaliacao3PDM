@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:terceira_prova/ui/tela_captura.dart';
 import 'package:terceira_prova/ui/tela_pokemon_capturado.dart';
-import 'package:terceira_prova/ui/tela_sobre.dart';
 
 class TelaHome extends StatefulWidget {
   const TelaHome({Key? key});

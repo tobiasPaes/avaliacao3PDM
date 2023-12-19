@@ -1,6 +1,6 @@
 import 'package:terceira_prova/dao/database.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
+//import 'package:sqflite/sqflite.dart' as sqflite;
 
 class DatabasePokemonHelper {
   static final DatabasePokemonHelper _instance =
@@ -17,7 +17,7 @@ class DatabasePokemonHelper {
   }
 
   Future<Appdatabase> initDatabase() async {
-    String? databasesPath = await sqflite.getDatabasesPath();
+    //String? databasesPath = await sqflite.getDatabasesPath();
     // String path = join(databasesPath, "pokemon_database.db");
 
     return $FloorAppdatabase.databaseBuilder("pokemon_database.db").build();
