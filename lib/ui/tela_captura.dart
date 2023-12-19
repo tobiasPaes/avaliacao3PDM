@@ -87,49 +87,53 @@ class _TelaCapturaState extends State<TelaCaptura> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _connectionStatus == ConnectivityResult.none ?
-        const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Voce esta sem conexao com a internet'),
-              Text('tente se conectar para ter acesso aos pokemon'),
-            ],
-          ),
-        )
-        :
-        FutureBuilder(
-          future: nomesPoke,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            }
-            final data = snapshot.data!;
-            final name = data['results'][rand[0]]['name'];
-
-            return Center(
+      body: _connectionStatus == ConnectivityResult.none
+          ? const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ListItem(id: rand[0], name: data['results'][rand[0]]['name']),
-                  ListItem(id: rand[1], name: data['results'][rand[1]]['name']),
-                  ListItem(id: rand[2], name: data['results'][rand[2]]['name']),
-                  ListItem(id: rand[3], name: data['results'][rand[3]]['name']),
-                  ListItem(id: rand[4], name: data['results'][rand[4]]['name']),
-                  ListItem(id: rand[5], name: data['results'][rand[5]]['name']),
-              ],
+                  Text('Voce esta sem conexao com a internet'),
+                  Text('tente se conectar para ter acesso aos pokemon'),
+                ],
+              ),
+            )
+          : FutureBuilder(
+              future: nomesPoke,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                }
+                final data = snapshot.data!;
+                final name = data['results'][rand[0]]['name'];
+
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ListItem(
+                          id: rand[0], name: data['results'][rand[0]]['name']),
+                      ListItem(
+                          id: rand[1], name: data['results'][rand[1]]['name']),
+                      ListItem(
+                          id: rand[2], name: data['results'][rand[2]]['name']),
+                      ListItem(
+                          id: rand[3], name: data['results'][rand[3]]['name']),
+                      ListItem(
+                          id: rand[4], name: data['results'][rand[4]]['name']),
+                      ListItem(
+                          id: rand[5], name: data['results'][rand[5]]['name']),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
     );
   }
 }

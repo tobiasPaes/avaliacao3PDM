@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:terceira_prova/ui/tela_captura.dart';
 import 'package:terceira_prova/ui/tela_pokemon_capturado.dart';
+import 'package:terceira_prova/ui/tela_sobre.dart'; // Importe a tela_sobre.dart
 
 class TelaHome extends StatefulWidget {
   const TelaHome({super.key});
@@ -30,27 +31,45 @@ class _HomeInfoState extends State<HomeInfo> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Meu App Av3'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'info page',),
-              Tab(text: 'Capturar Pokemons',),
-              Tab(text: 'Pokemons Capturados',),
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color.fromARGB(255, 225, 200, 200),
+            title: const Text('Pokemons'),
+            bottom: const TabBar(
+              tabs: [
+                Tab(
+                  text: 'Informações',
+                ),
+                Tab(
+                  text: 'Capturar Pokemons',
+                ),
+                Tab(
+                  text: 'Pokemons Capturados',
+                ),
+              ],
+            ),
+            actions: [
+              // Adicione um ícone de interrogação para a tela_sobre.dart
+              IconButton(
+                icon: Icon(Icons.help),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TelaSobre()),
+                  );
+                },
+              ),
             ],
           ),
-        ),
-        body: const TabBarView(
-          children: [
-            InfoApp(),
-            TelaCaptura(),
-            TelaPokemonCapturado(),
-          ],
-        ),
-      )
-    );
+          body: const TabBarView(
+            children: [
+              InfoApp(),
+              TelaCaptura(),
+              TelaPokemonCapturado(),
+            ],
+          ),
+        ));
   }
 }
 

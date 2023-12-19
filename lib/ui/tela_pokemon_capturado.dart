@@ -37,28 +37,35 @@ class _TelaPokemonCapturadoState extends State<TelaPokemonCapturado> {
           : ListView.builder(
               itemCount: bolsa.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(bolsa[index].nome),
-                  onTap: () async {
-                    _atualizarBolsa();
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaDetalhesPokemon(
-                          id: bolsa[index].idPokedex,
+                return Card(
+                  child: ListTile(
+                    leading: Image.network(
+                      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${bolsa[index].idPokedex}.png',
+                      width: 48, // Defina o tamanho desejado
+                      height: 48,
+                    ),
+                    title: Text(bolsa[index].nome),
+                    onTap: () async {
+                      _atualizarBolsa();
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TelaDetalhesPokemon(
+                            id: bolsa[index].idPokedex,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  onLongPress: () async {
-                    _atualizarBolsa();
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaSoltarPokemon(id: bolsa[index].idPokedex)
-                      ),
-                    );
-                  },
+                      );
+                    },
+                    onLongPress: () async {
+                      _atualizarBolsa();
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TelaSoltarPokemon(id: bolsa[index].idPokedex)),
+                      );
+                    },
+                  ),
                 );
               },
             ),
