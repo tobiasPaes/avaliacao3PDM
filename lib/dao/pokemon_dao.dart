@@ -12,6 +12,6 @@ abstract class PokemonDAO {
   @Query('SELECT * FROM app_database where id = :id')
   Future<List<Pokemon?>> findById(int id);
 
-  @Query('DELETE * FROM app_database where id = :id')
+  @Query('DELETE FROM app_database where id = :id')
   Future<void> deletePokemon(int id);
 }

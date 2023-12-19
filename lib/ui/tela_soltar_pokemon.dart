@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_function_declarations_over_variables
+// ignore_for_file: prefer_function_declarations_over_variables, non_constant_identifier_names
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
 
@@ -27,12 +28,20 @@ class _TelaSoltarPokemonState extends State<TelaSoltarPokemon> {
     imagem =
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png';
 
-    var banco = () async {
-      final db = await _db.pokemonDatabase;
-      list = await db.pokeDao.findById(id);
-    };
+    carregarDados();
+  }
 
-    banco();
+  Future<void> carregarDados() async {
+    final db = await _db.pokemonDatabase;
+    final result = await db.pokeDao.findById(id);
+    setState(() {
+      list = result;
+    });
+  }
+
+  Future<void> deletar(int id_pokemon) async {
+    final db = await _db.pokemonDatabase;
+    await db.pokeDao.deletePokemon(id_pokemon);
   }
 
   @override
@@ -46,16 +55,32 @@ class _TelaSoltarPokemonState extends State<TelaSoltarPokemon> {
           children: [
             Row(
               children: [
-                Image.network(imagem, width: 96, height: 96,),
-                Text(list.first!.nome),
+                Image.network(
+                  imagem,
+                  width: 96,
+                  height: 96,
+                ),
+                Text(list.isNotEmpty ? list.first!.nome : ''),
               ],
             ),
-            Text('Tipo: ${list.first!.tipos}'),
-            Text('Altura: ${list.first!.altura}'),
-            Text('Peso: ${list.first!.peso}'),
-            Container(height: 80,),
-            const TextButton(onPressed: null, child: Text('Soltar')),
-            const TextButton(onPressed: null, child: Text('Cancelar')),
+            Text('Tipo: ${list.isNotEmpty ? list.first!.tipos : ''}'),
+            Text('Altura: ${list.isNotEmpty ? list.first!.altura : ''}'),
+            Text('Peso: ${list.isNotEmpty ? list.first!.peso : ''}'),
+            Container(
+              height: 80,
+            ),
+            TextButton(
+                onPressed: () {
+                  deletar(id);
+                  carregarDados();
+                  Navigator.pop(context);
+                },
+                child: const Text('Soltar')),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancelar')),
           ],
         ),
       ),

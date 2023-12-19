@@ -119,12 +119,12 @@ class _TelaCapturaState extends State<TelaCaptura> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ListItem(id: 0, name: data['results'][0]['name']),
-                  ListItem(id: 1, name: data['results'][1]['name']),
-                  ListItem(id: 2, name: data['results'][2]['name']),
-                  ListItem(id: 3, name: data['results'][3]['name']),
-                  ListItem(id: 4, name: data['results'][4]['name']),
-                  ListItem(id: 5, name: data['results'][5]['name']),
+                  ListItem(id: rand[0], name: data['results'][rand[0]]['name']),
+                  ListItem(id: rand[1], name: data['results'][rand[1]]['name']),
+                  ListItem(id: rand[2], name: data['results'][rand[2]]['name']),
+                  ListItem(id: rand[3], name: data['results'][rand[3]]['name']),
+                  ListItem(id: rand[4], name: data['results'][rand[4]]['name']),
+                  ListItem(id: rand[5], name: data['results'][rand[5]]['name']),
               ],
             ),
           );

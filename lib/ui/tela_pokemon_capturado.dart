@@ -40,7 +40,7 @@ class _TelaPokemonCapturadoState extends State<TelaPokemonCapturado> {
                 return ListTile(
                   title: Text(bolsa[index].nome),
                   onTap: () async {
-                    // Detalhes do Pokémon
+                    _atualizarBolsa();
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -49,18 +49,15 @@ class _TelaPokemonCapturadoState extends State<TelaPokemonCapturado> {
                         ),
                       ),
                     );
-                    // Atualizar a lista ao voltar
-                    _atualizarBolsa();
                   },
                   onLongPress: () async {
+                    _atualizarBolsa();
                     await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => TelaSoltarPokemon(id: bolsa[index].idPokedex)
                       ),
                     );
-                    _atualizarBolsa();
-                    // Lógica para soltar o Pokémon
                   },
                 );
               },
