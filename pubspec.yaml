@@ -15,6 +15,7 @@ dependencies:
   floor: ^1.4.2
   connectivity_plus: ^5.0.2
   http: ^1.1.0
+  sqflite: ^2.3.0
 
 
 dev_dependencies:
@@ -33,3 +34,7 @@ flutter_launcher_icons:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/poke.png
+    - assets/pokemon.png
+    - assets/aaaa.jpg

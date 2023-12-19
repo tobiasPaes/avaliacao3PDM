@@ -1,6 +1,5 @@
 import 'package:terceira_prova/dao/database.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
-import 'package:terceira_prova/dao/pokemon_dao.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 class DatabasePokemonHelper {
@@ -33,5 +32,10 @@ class DatabasePokemonHelper {
   Future<List<Pokemon>> getAllPokemons() async {
     final db = await pokemonDatabase;
     return db.pokeDao.listAll();
+  }
+
+  Future<void> deletePokemon(int id) async {
+    final db = await pokemonDatabase;
+    await db.pokeDao.deletePokemon(id);
   }
 }

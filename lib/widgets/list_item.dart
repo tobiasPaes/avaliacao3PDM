@@ -92,55 +92,56 @@ class _ListItemState extends State<ListItem> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: dadosPokemon,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
-        }
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(snapshot.error.toString()),
-          );
-        }
-        final data = snapshot.data!;
-        final tipo = data['types'][0]['type']['name'];
-        final peso = data['weight'] / 10;
-        final altura = data['height'] * 10;
-        final cor = pokemonColor;
+        future: dadosPokemon,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(snapshot.error.toString()),
+            );
+          }
+          final data = snapshot.data!;
+          final tipo = data['types'][0]['type']['name'];
+          final peso = data['weight'] / 10;
+          final altura = data['height'] * 10;
+          final cor = pokemonColor;
 
-        return Center(
-          child: Row(
+          return Center(
+              child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 '$pokemonId, $pokemonName',
-                style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w200
-                ),
+                style:
+                    const TextStyle(fontSize: 30, fontWeight: FontWeight.w200),
               ),
               Container(
                 width: 8.0,
               ),
               IconButton(
                 onPressed: !naBolsa
-                  ? () {
-                    Pokemon p = Pokemon(pokemonName, pokemonId, peso.toDouble(), altura.toDouble(), cor, tipo);
-                    capturarPokemon(p);
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Pokemon Capturado')));
-                    }
-                  : null,
+                    ? () {
+                        Pokemon p = Pokemon(pokemonName, pokemonId,
+                            peso.toDouble(), altura.toDouble(), cor, tipo);
+                        capturarPokemon(p);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text('Pokemon Capturado'),
+                          duration: Duration(seconds: 1),
+                        ));
+                      }
+                    : null,
                 icon: const Icon(Icons.catching_pokemon),
                 color: !naBolsa
-                  ? const Color.fromRGBO(255, 0, 0, 1)
-                  : const Color.fromARGB(255, 53, 53, 53),
+                    ? const Color.fromARGB(255, 8, 8, 8)
+                    : const Color.fromARGB(255, 233, 38, 38),
               )
             ],
-          )
-        );
-      }
-    );
+          ));
+        });
   }
 }

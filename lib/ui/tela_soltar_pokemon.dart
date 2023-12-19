@@ -1,13 +1,9 @@
-// ignore_for_file: prefer_function_declarations_over_variables, non_constant_identifier_names
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:terceira_prova/domain/pokemon.dart';
 
 class TelaSoltarPokemon extends StatefulWidget {
-  const TelaSoltarPokemon({super.key, required this.id});
+  const TelaSoltarPokemon({Key? key, required this.id}) : super(key: key);
 
   final int id;
 
@@ -48,40 +44,76 @@ class _TelaSoltarPokemonState extends State<TelaSoltarPokemon> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Meu Pokemon'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Meu Pokémon',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Image.network(
-                  imagem,
-                  width: 96,
-                  height: 96,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/aaaa.jpg"),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.7),
+              BlendMode.dstATop,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Container(
+            width: 300,
+            height: 400,
+            child: Card(
+              color: Colors.white.withOpacity(0.7),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                        imagem,
+                        width: 96,
+                        height: 96,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        list.isNotEmpty ? list.first!.nome : '',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Text('Tipo: ${list.isNotEmpty ? list.first!.tipos : ''}'),
+                      Text(
+                          'Altura: ${list.isNotEmpty ? list.first!.altura : ''}'),
+                      Text('Peso: ${list.isNotEmpty ? list.first!.peso : ''}'),
+                      Text('Cor: ${list.isNotEmpty ? list.first!.cor : ''}'),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await deletar(id);
+                          await carregarDados();
+                          if (mounted) {
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: const Text('Soltar'),
+                      ),
+                      const SizedBox(height: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Cancelar'),
+                      ),
+                    ],
+                  ),
                 ),
-                Text(list.isNotEmpty ? list.first!.nome : ''),
-              ],
+              ),
             ),
-            Text('Tipo: ${list.isNotEmpty ? list.first!.tipos : ''}'),
-            Text('Altura: ${list.isNotEmpty ? list.first!.altura : ''}'),
-            Text('Peso: ${list.isNotEmpty ? list.first!.peso : ''}'),
-            Container(
-              height: 80,
-            ),
-            TextButton(
-                onPressed: () {
-                  deletar(id);
-                  carregarDados();
-                  Navigator.pop(context);
-                },
-                child: const Text('Soltar')),
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancelar')),
-          ],
+          ),
         ),
       ),
     );

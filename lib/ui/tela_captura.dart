@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, unused_field, unused_import
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
@@ -26,6 +24,8 @@ class _TelaCapturaState extends State<TelaCaptura> {
   int num = 0;
   List<int> rand = [1, 1, 1, 1, 1, 1];
   late Future<Map<String, dynamic>> nomesPoke;
+  String backgroundImage =
+      "assets/aaaa.jpg"; // Substitua pelo caminho real da sua imagem
 
   @override
   void initState() {
@@ -51,7 +51,6 @@ class _TelaCapturaState extends State<TelaCaptura> {
         throw 'Erro de conexao';
       }
       final data = jsonDecode(res.body);
-      // print(data['results']);
       return data;
     } catch (e) {
       throw e.toString();
@@ -92,8 +91,8 @@ class _TelaCapturaState extends State<TelaCaptura> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Voce esta sem conexao com a internet'),
-                  Text('tente se conectar para ter acesso aos pokemon'),
+                  Text('Você está sem conexão com a internet'),
+                  Text('Tente se conectar para ter acesso aos pokémons'),
                 ],
               ),
             )
@@ -113,23 +112,40 @@ class _TelaCapturaState extends State<TelaCaptura> {
                 final data = snapshot.data!;
                 final name = data['results'][rand[0]]['name'];
 
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ListItem(
-                          id: rand[0], name: data['results'][rand[0]]['name']),
-                      ListItem(
-                          id: rand[1], name: data['results'][rand[1]]['name']),
-                      ListItem(
-                          id: rand[2], name: data['results'][rand[2]]['name']),
-                      ListItem(
-                          id: rand[3], name: data['results'][rand[3]]['name']),
-                      ListItem(
-                          id: rand[4], name: data['results'][rand[4]]['name']),
-                      ListItem(
-                          id: rand[5], name: data['results'][rand[5]]['name']),
-                    ],
+                return Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(backgroundImage),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Container(
+                    color: Colors.white.withOpacity(0.5),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ListItem(
+                              id: rand[0],
+                              name: data['results'][rand[0]]['name']),
+                          ListItem(
+                              id: rand[1],
+                              name: data['results'][rand[1]]['name']),
+                          ListItem(
+                              id: rand[2],
+                              name: data['results'][rand[2]]['name']),
+                          ListItem(
+                              id: rand[3],
+                              name: data['results'][rand[3]]['name']),
+                          ListItem(
+                              id: rand[4],
+                              name: data['results'][rand[4]]['name']),
+                          ListItem(
+                              id: rand[5],
+                              name: data['results'][rand[5]]['name']),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               },
@@ -137,17 +153,3 @@ class _TelaCapturaState extends State<TelaCaptura> {
     );
   }
 }
-/*
-      body: _conectado
-          ? ListView.builder(
-              itemCount: _pokemonsDisponiveis.length,
-              itemBuilder: (context, index) {
-                return _buildPokemonCard(_pokemonsDisponiveis[index]);
-              },
-            )
-          : const Center(
-              child: Text('Sem conexão com a Internet'),
-            ),
-    );
-  }
-*/

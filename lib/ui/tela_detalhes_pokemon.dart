@@ -8,7 +8,7 @@ import 'package:terceira_prova/helper/database_helper.dart';
 import 'package:http/http.dart' as http;
 
 class TelaDetalhesPokemon extends StatefulWidget {
-  const TelaDetalhesPokemon({super.key, required this.id});
+  const TelaDetalhesPokemon({Key? key, required this.id}) : super(key: key);
 
   final int id;
 
@@ -20,7 +20,7 @@ class _MyWidgetState extends State<TelaDetalhesPokemon> {
   final DatabasePokemonHelper _db = DatabasePokemonHelper();
   int id = 0;
   List<Pokemon?> list = [];
-
+  String backgroundImage = "assets/aaaa.jpg";
   String imagem = '';
 
   @override
@@ -73,67 +73,115 @@ class _MyWidgetState extends State<TelaDetalhesPokemon> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 225, 200, 200),
-        title: const Text('Detalhes do Pokemon'),
+        backgroundColor: Colors.black,
+        title: Text(
+          'Detalhes do Pokémon',
+          style: TextStyle(color: Colors.white),
+        ),
+        elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
-      body: Center(
-        child: FutureBuilder(
-          future: Future.value(list),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            }
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(backgroundImage),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.5),
+                  BlendMode.dstATop,
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: FutureBuilder(
+              future: Future.value(list),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(snapshot.error.toString()),
+                  );
+                }
 
-            final pokemon = list.first;
+                final pokemon = list.first;
 
-            return pokemon != null
-                ? ListView(
-                    children: [
-                      Card(
-                        child: Column(
-                          children: [
-                            Image.network(imagem, width: 96, height: 96),
-                            ListTile(
-                              title: Text(
-                                pokemon.nome,
-                                style: const TextStyle(
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.bold,
+                return pokemon != null
+                    ? Container(
+                        width: 300,
+                        height: 500,
+                        child: Card(
+                          color: Colors.white.withOpacity(0.7),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 96,
+                                child: Image.network(
+                                  imagem,
+                                  width: 96,
+                                  height: 96,
                                 ),
                               ),
-                            ),
-                            ListTile(
-                              title: Text('Tipo: ${pokemon.tipos}'),
-                            ),
-                            ListTile(
-                              title: Text('Cor: ${pokemon.cor}'),
-                            ),
-                            ListTile(
-                              title: Text('Altura: ${pokemon.altura}'),
-                            ),
-                            ListTile(
-                              title: Text('Peso: ${pokemon.peso}'),
-                            ),
-                            ListTile(
-                              title: Text('Id: ${pokemon.idPokedex}'),
-                            ),
-                          ],
+                              Container(
+                                alignment: Alignment.center,
+                                child: ListTile(
+                                  title: Text(
+                                    pokemon.nome,
+                                    style: const TextStyle(
+                                      fontSize: 26.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: ListTile(
+                                  title: Text('Tipo: ${pokemon.tipos}'),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: ListTile(
+                                  title: Text('Cor: ${pokemon.cor}'),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: ListTile(
+                                  title: Text('Altura: ${pokemon.altura}'),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: ListTile(
+                                  title: Text('Peso: ${pokemon.peso}'),
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                child: ListTile(
+                                  title: Text('Id: ${pokemon.idPokedex}'),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
-
-                      // Adicione mais detalhes conforme necessário
-                    ],
-                  )
-                : const Text('Detalhes não encontrados');
-          },
-        ),
+                    : const Text('Detalhes não encontrados');
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
